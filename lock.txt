@@ -1,0 +1,6 @@
+django==3.0.*
+pillow
+celery==4.4.2
+braintree==3.59.0
+WeasyPrint==51
+redis==3.4.1
