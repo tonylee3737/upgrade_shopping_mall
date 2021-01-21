@@ -4,16 +4,16 @@
 Your shopping cart
 {% endblock %}
 {% block content %}
-  <h1>Your shopping cart</h1>
+  <h1>장바구니</h1>
   <table class="cart">
     <thead>
       <tr>
-        <th>Image</th>
-        <th>Product</th>
-        <th>Quantity</th>
-        <th>Remove</th>
-        <th>Unit price</th>
-        <th>Price</th>
+        <th>사진</th>
+        <th>상품</th>
+        <th>수량</th>
+        <th>제거</th>
+        <th>상품가격</th>
+        <th>합계</th>
       </tr>
     </thead>
     <tbody>
@@ -22,76 +22,70 @@ Your shopping cart
           <tr>
 <td>
               <a href="{{ product.get_absolute_url }}">
-                <img src="{% if product.image %}{{ product.image.url }}
-                {% else %}{% static "img/no_image.png" %}{% endif %}">
+            {% if product.image %}
+          <img src="{{ product.image.url }}" style="width: 248px; height: 248px"
+          {% else %}{% static "img/no_image.png" %}{% endif %}">
               </a>
             </td>
             <td>{{ product.name }}</td>
             <td><form action="{% url "cart:cart_add" product.id %}" method="post">
                 {{ item.update_quantity_form.quantity }}
                 {{ item.update_quantity_form.override }}
-                <input type="submit" value="Update">
+                <input type="submit" value="Update"style="WIDTH: 100pt; HEIGHT: 30pt">
                 {% csrf_token %}
               </form>
             <td>
               <form action="{% url "cart:cart_remove" product.id %}" method="post">
-                <input type="submit" value="Remove">
+                <input type="submit" value="Remove" style="WIDTH: 100pt; HEIGHT: 30pt">
                 {% csrf_token %}
               </form>
             </td>
-            <td class="num">${{ item.price }}</td>
-            <td class="num">${{ item.total_price }}</td>
+            <td class="num">{{ item.price }}원</td>
+            <td class="num">{{ item.total_price}}원</td>
           </tr>
         {% endwith %}
 {% endfor %}
-
-      {% comment %} <tr class="total">
-        <td>Total</td>
-        <td colspan="4"></td>
-        <td class="num">${{ cart.get_total_price }}</td>
-      </tr> {% endcomment %}
 
         {% if cart.coupon %}
         <tr class="subtotal">
             <td>Subtotal</td>
             <td colspan="4"></td>
-            <td class="num">${{ cart.get_total_price|floatformat:2 }}</td>
+            <td class="num">{{ cart.get_total_price }}원</td>
         </tr>
     <tr>
     <td>
         "{{ cart.coupon.code }}" coupon
-      ({{ cart.coupon.discount }}% off)
+      ({{ cart.coupon.discount }}% 할인)
     </td>
     <td colspan="4"></td>
     <td class="num neg">
-      - ${{ cart.get_discount|floatformat:2 }}
+      - {{ cart.get_discount}}원
     </td>
   </tr>
 {% endif %}
 <tr class="total">
-  <td>Total</td>
-  <td colspan="4"></td>
+  <center><td>합계</td></center>
+  <td colspan="10"></td>
   <td class="num">
-    ${{ cart.get_total_price_after_discount|floatformat:2 }}
-  </td>
+    {{ cart.get_total_price_after_discount}}원
+  </td></center>
 </tr>
 
 
     </tbody>
   </table>
-
-<p>Apply a coupon:</p>
-<form action="{% url "coupons:apply" %}" method="post">
-  {{ coupon_apply_form }}
-  <input type="submit" value="Apply">
-  {% csrf_token %}
-</form>
-
   <p class="text-right">
     <a href="{% url "shop:product_list" %}" class="button
-    light">Continue shopping</a>
+    light">쇼핑 계속하기</a>
     <a href="{% url "orders:order_create"%}" class="button">
-    Checkout
+    구매하기
     </a>
   </p>
+
+<p>쿠폰 등록: </p>
+<form action="{% url "coupons:apply" %}" method="post">
+  {{ coupon_apply_form }}
+  <input type="submit" value="적용하기">
+  {% csrf_token %}
+  </form>
 {% endblock %}

@@ -17,7 +17,7 @@ def payment_process(request):
         nonce = request.POST.get('payment_method_nonce', None)
         # create and submit transaction
         result = gateway.transaction.sale({
-            'amount': f'{total_cost:.2f}',
+            'amount': f'{total_cost}',
             'payment_method_nonce': nonce,
             'options': {
                 'submit_for_settlement': True

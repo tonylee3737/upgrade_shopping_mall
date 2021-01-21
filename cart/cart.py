@@ -3,6 +3,7 @@ from django.conf import settings
 from shop.models import Product
 from coupons.models import Coupon
 
+
 class Cart(object):
     def __init__(self, request):
         """
@@ -13,7 +14,7 @@ class Cart(object):
         if not cart:
             # save an empty cart in the session
             cart = self.session[settings.CART_SESSION_ID] = {}
-        
+
         self.cart = cart
         # stor current applied coupon
         self.coupon_id = self.session.get('coupon_id')
@@ -26,14 +27,14 @@ class Cart(object):
             except Coupon.DoesNotExist:
                 pass
         return None
+
     def get_discount(self):
         if self.coupon:
-            return (self.coupon.discount / Decimal(100)) \
-                * self.get_total_price()
-        return Decimal(0)
+            return int(((self.coupon.discount) * self.get_total_price()) / 100)
+        return int(0)
+
     def get_total_price_after_discount(self):
         return self.get_total_price() - self.get_discount()
-
 
     def add(self, product, quantity=1, override_quantity=False):
         # Add a product to the cart or update its quantity.
@@ -41,7 +42,7 @@ class Cart(object):
         product_id = str(product.id)
         if product_id not in self.cart:
             self.cart[product_id] = {'quantity': 0,
-                                    'price': str(product.price)}
+                                     'price': str(product.price)}
         if override_quantity:
             self.cart[product_id]['quantity'] = quantity
         else:
@@ -73,8 +74,8 @@ class Cart(object):
         for product in products:
             cart[str(product.id)]['product'] = product
         for item in cart.values():
-            item['price'] = Decimal(item['price'])
-            item['total_price'] = item['price'] * item['quantity']
+            item['price'] = (item['price'])
+            item['total_price'] = (int)(item['price']) * item['quantity']
             yield item
 
     def __len__(self):
@@ -85,6 +86,7 @@ class Cart(object):
 
     def get_total_price(self):
         return sum(Decimal(item['price']) * item['quantity'] for item in self.cart.values())
+        # return sum(int(item['price']) * item['quantity'] for item in self.cart.values())
 
     def clear(self):
         # remove cart from session
