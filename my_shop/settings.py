@@ -32,6 +32,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'channels',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -43,6 +44,8 @@ INSTALLED_APPS = [
     'orders',
     'payment',
     'coupons',
+    'chat',
+
 ]
 
 MIDDLEWARE = [
@@ -134,6 +137,7 @@ CART_SESSION_ID = 'cart'
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
+
 # Braintree settings
 BRAINTREE_MERCHANT_ID = '7zwbft48h5fp6y3y'  # Merchant ID
 BRAINTREE_PUBLIC_KEY = '5jtr5bx7b8zx9nqk'   # Public Key
@@ -148,3 +152,14 @@ BRAINTREE_CONF = braintree.Configuration(
 REDIS_HOST = "localhost"
 REDIS_PORT = 6370
 REDIS_DB = 1
+
+ASGI_APPLICATION = 'my_shop.routing.application'
+
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            'hosts': [('127.0.0.1', 6379)],
+        },
+    },
+}

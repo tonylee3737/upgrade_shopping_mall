@@ -8,8 +8,12 @@
   </head>
   <body>
     <div id="header">
-      <a href="/" class="logo">관호's Shop</a>
+      <a href="/" class="logo">관호's Shop</a>  
+      <br>
     </div>
+      <div style= float:right;>
+      <h3><a href ="{% url "chat:chat_room" %}" class="logo">실시간 채팅 문의</a></h3>
+      </div>
     <div id="subheader">
       <div class="cart">
         {% with total_items=cart|length %}
@@ -24,10 +28,20 @@
           {% endif %}
         {% endwith %}
       </div>
+        
     </div>
     <div id="content">
       {% block content %}
       {% endblock %}
     </div>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+  <script>
+    $(document).ready(function() {
+      {% block domready %}
+      {% endblock %}
+    });
+  </script>
+
   </body>
 </html>

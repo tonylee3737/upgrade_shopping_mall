@@ -27,7 +27,8 @@
           {% if product.image %}
           <img src="{{ product.image.url }}" style="width: 248px; height: 248px"
           {% else %}{% static "img/no_image.png" %}{% endif %}">
-</a>
+</a>    
+        <br>
         <a href="{{ product.get_absolute_url }}">{{ product.name }}</a>
         가격:{{ product.price }}원
         <br>

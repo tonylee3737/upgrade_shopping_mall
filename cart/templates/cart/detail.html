@@ -64,11 +64,11 @@ Your shopping cart
   </tr>
 {% endif %}
 <tr class="total">
-  <center><td>합계</td></center>
-  <td colspan="10"></td>
+  <td>합계</td></center>
+  <td colspan="4"></td>
   <td class="num">
-    {{ cart.get_total_price_after_discount}}원
-  </td></center>
+  {{ cart.get_total_price_after_discount}}원
+  </td>
 </tr>
 
 
@@ -89,3 +89,5 @@ Your shopping cart
   {% csrf_token %}
   </form>
 {% endblock %}
+
+

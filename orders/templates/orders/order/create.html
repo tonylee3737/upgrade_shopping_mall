@@ -1,38 +1,35 @@
-{% extends "shop/base.html" %}
-{% block title %}
-  Checkout
-{% endblock %}
+{% extends "shop/base.html" %} {% block title %} Checkout {% endblock %} {%
+block content %}
+<h1>결제</h1>
+<div class="order-info">
+  <h3>주문</h3>
 {% block content %}
-  <h1>결제</h1>
-  <div class="order-info">
-    <h3>주문</h3>
-    
-    
-<ul>
-  {% for item in cart %}
+  <ul>
+    {% for item in cart %}
     <li>
       수량:{{ item.quantity }} 상품이름:{{ item.product.name }}
       <span>{{ item.total_price}}원</span>
     </li>
-{% endfor %}
-  {% if cart.coupon %}
+    {% endfor %} {% if cart.coupon %}
     <li>
       쿠폰:"{{ cart.coupon.code }}" ({{ cart.coupon.discount }}% 할인)
       <span class="neg"> -{{ cart.get_discount }}원 </span>
     </li>
-  {% endif %}
-</ul>
-  </div>
-  <br><br><br><br><br>
-  <div>
-  <p>-------------------------------합계: {{ cart.get_total_price_after_discount}}원</p>
+    {% endif %}
+  </ul>
 </div>
-  <hr>
-  {% comment %} <br><br><br>   {% endcomment %}
-  <form method="post" class="order-form">
-    배송지입력
-    {{ form.as_p }}
-    <p><input type="submit" value="주문하기"></p>
-    {% csrf_token %}
-  </form>
+<br /><br /><br /><br /><br />
+<div>
+  <p>
+    -------------------------------합계: {{cart.get_total_price_after_discount}}원
+  </p>
+</div>
+<hr />
+{% comment %} <br /><br /><br />
+{% endcomment %}
+<form method="post" class="order-form">
+  배송지입력 {{ form.as_p }}
+  <p><input type="submit" value="주문하기" /></p>
+  {% csrf_token %}
+</form>
 {% endblock %}
